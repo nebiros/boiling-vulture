@@ -6,7 +6,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
-
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
@@ -38,4 +37,5 @@ ext {
     rxAndroidVersion = '1.2.1'
     rxJavaVersion = '1.1.7'
     retrofit2Version = '2.1.0'
+    butterknifeVersion = '8.2.1'
 }

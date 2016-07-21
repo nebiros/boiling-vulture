@@ -39,11 +39,14 @@ dependencies {
     compile "io.reactivex:rxandroid:$rootProject.ext.rxAndroidVersion"
     compile "io.reactivex:rxjava:$rootProject.ext.rxJavaVersion"
     compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit2Version"
+    compile "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
 
     // dagger
     apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    // butterknife
+    apt "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknifeVersion"
 
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
