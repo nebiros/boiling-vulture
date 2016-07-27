@@ -7,13 +7,30 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.main.MainFragment"
-    tools:showIn="@layout/activity_main"
     >
 
-  <TextView
+  <EditText
+      android:id="@+id/convert_edit_view"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Hello World!"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentTop="true"
+      android:textAppearance="?android:attr/textAppearanceLarge"
+      android:inputType="text"
+      android:hint="@string/convert_edit_view_placeholder"
       />
-
+  <Button
+      android:id="@+id/convert_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignEnd="@+id/convert_edit_view"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:layout_alignRight="@+id/convert_edit_view"
+      android:layout_below="@+id/convert_edit_view"
+      android:text="@string/convert_button"
+      />
 </RelativeLayout>

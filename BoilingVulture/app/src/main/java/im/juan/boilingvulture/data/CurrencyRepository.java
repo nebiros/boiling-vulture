@@ -14,7 +14,7 @@ import rx.Observable;
     this.fixerService = fixerService;
   }
 
-  public Observable<Result<LatestBaseUsd>> latest() {
-    return fixerService.latest();
+  public Observable<Result<LatestRates>> latestRatesBaseUsd() {
+    return fixerService.latestRatesBaseUsd();
   }
 }

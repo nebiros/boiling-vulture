@@ -1,45 +1,52 @@
 package im.juan.boilingvulture.ui.main;
 
 import im.juan.boilingvulture.data.CurrencyRepository;
-import im.juan.boilingvulture.data.LatestBaseUsd;
+import im.juan.boilingvulture.data.LatestRates;
 import javax.inject.Inject;
-import retrofit2.adapter.rxjava.Result;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
+import rx.subscriptions.CompositeSubscription;
 
 public final class MainPresenter implements MainContract.Presenter {
 
   private final CurrencyRepository currencyRepository;
   private final MainContract.View view;
 
+  private final CompositeSubscription subscriptions;
+
   @Inject public MainPresenter(CurrencyRepository currencyRepository, MainContract.View view) {
     this.currencyRepository = currencyRepository;
     this.view = view;
+    this.subscriptions = new CompositeSubscription();
   }
 
   @Inject void setupListeners() {
     view.setPresenter(this);
   }
 
-  @Override public void start() {
-    loadLatest();
+  @Override public void loadLatestRatesBaseUsd() {
+    final Subscription subscription = currencyRepository.latestRatesBaseUsd()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(latestBaseUsdResult -> {
+          if (latestBaseUsdResult.isError()) {
+            view.showError(latestBaseUsdResult.error());
+            return;
+          }
+
+          final LatestRates latestRates = latestBaseUsdResult.response().body();
+          view.latestRates(latestRates);
+        }, view::showError);
+
+    subscriptions.add(subscription);
   }
 
-  public void loadLatest() {
-    currencyRepository.latest()
-        .subscribeOn(Schedulers.io())
-        .subscribeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Result<LatestBaseUsd>>() {
-          @Override public void call(Result<LatestBaseUsd> latestBaseUsdResult) {
-            final LatestBaseUsd latestBaseUsd = latestBaseUsdResult.response().body();
-            Timber.d("latestBaseUsd, %s", latestBaseUsd);
-          }
-        }, new Action1<Throwable>() {
-          @Override public void call(Throwable throwable) {
-            Timber.d(throwable, "throwable");
-          }
-        });
+  @Override public void subscribe() {
+    loadLatestRatesBaseUsd();
+  }
+
+  @Override public void unsubscribe() {
+    subscriptions.clear();
   }
 }
