@@ -1,2 +1,2 @@
-# A Android Currency Converter App
+# An Android Currency Converter App
 

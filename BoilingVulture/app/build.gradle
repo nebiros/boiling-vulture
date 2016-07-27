@@ -14,12 +14,42 @@ android {
     versionName "1.0"
 
     testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+
+    buildConfigField "String", "API_BASE_URL", '\"http://api.fixer.io\"'
   }
 
   buildTypes {
-    release {
-      minifyEnabled false
+    debug {
+      minifyEnabled true
+      // Uses new built-in shrinker http://tools.android.com/tech-docs/new-build-system/built-in-shrinker
+      useProguard false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+    }
+
+    release {
+      minifyEnabled true
+      useProguard true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+    }
+  }
+
+  productFlavors {
+    mock {
+      applicationIdSuffix = ".mock"
+    }
+
+    prod {
+
+    }
+  }
+
+  android.variantFilter { variant ->
+    if (variant.buildType.name.equals('release') && variant.getFlavors().
+        get(0).name.
+        equals('mock')) {
+      variant.setIgnore(true);
     }
   }
 
@@ -44,7 +74,14 @@ dependencies {
   compile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
   compile "io.reactivex:rxandroid:$rootProject.ext.rxAndroidVersion"
   compile "io.reactivex:rxjava:$rootProject.ext.rxJavaVersion"
-  compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit2Version"
+  compile("com.squareup.retrofit2:retrofit:$rootProject.ext.retrofit2Version") {
+    exclude module: 'okhttp'
+  }
+  compile "com.squareup.okhttp3:okhttp:$rootProject.ext.okhttp3Version"
+  compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttp3Version"
+  compile "com.squareup.retrofit2:converter-moshi:$rootProject.ext.retrofit2Version"
+  compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.ext.retrofit2Version"
+  compile "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
 
   // dagger
   apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
