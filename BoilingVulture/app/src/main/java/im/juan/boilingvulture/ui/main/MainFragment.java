@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import im.juan.boilingvulture.R;
 import im.juan.boilingvulture.data.LatestRates;
 
@@ -12,6 +14,8 @@ public class MainFragment extends Fragment implements MainContract.View {
 
   private MainContract.Presenter presenter;
   private LatestRates latestRates;
+  private EditText convertEditView;
+  private Button convertButton;
 
   public MainFragment() {
   }
@@ -32,7 +36,13 @@ public class MainFragment extends Fragment implements MainContract.View {
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_main, container, false);
+    final View root = inflater.inflate(R.layout.fragment_main, container, false);
+    convertEditView = (EditText) root.findViewById(R.id.convert_edit_text);
+    convertButton = (Button) root.findViewById(R.id.convert_button);
+    convertButton.setOnClickListener(
+        view -> presenter.calculateRates(convertEditView.getText().toString(), latestRates.rates));
+
+    return root;
   }
 
   @Override public void setPresenter(MainContract.Presenter presenter) {

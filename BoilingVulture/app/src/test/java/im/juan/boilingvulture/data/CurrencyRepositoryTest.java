@@ -12,6 +12,10 @@ import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.when;
 
 public class CurrencyRepositoryTest {
@@ -50,5 +54,22 @@ public class CurrencyRepositoryTest {
 
     testSubscriber.assertNoErrors();
     testSubscriber.assertValueCount(1);
+  }
+
+  @Test public void testCalculateRates() throws Exception {
+    final int amount = 100;
+    final Map<String, Double> rates = new ArrayMap<>();
+    rates.put("BRL", 3.2537);
+    rates.put("GBP", 0.75429);
+    rates.put("JPY", 105.69);
+    rates.put("EUR", 0.90473);
+
+    final Map<String, Integer> calculatedRates = repository.calculateRates(amount, rates);
+
+    assertThat(calculatedRates, is(not(nullValue())));
+    assertThat(calculatedRates.get("BRL"), is(325));
+    assertThat(calculatedRates.get("GBP"), is(75));
+    assertThat(calculatedRates.get("JPY"), is(10569));
+    assertThat(calculatedRates.get("EUR"), is(90));
   }
 }

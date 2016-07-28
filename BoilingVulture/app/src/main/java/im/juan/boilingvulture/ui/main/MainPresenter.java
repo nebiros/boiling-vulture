@@ -2,6 +2,7 @@ package im.juan.boilingvulture.ui.main;
 
 import im.juan.boilingvulture.data.CurrencyRepository;
 import im.juan.boilingvulture.data.LatestRates;
+import java.util.Map;
 import javax.inject.Inject;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,6 +41,17 @@ public final class MainPresenter implements MainContract.Presenter {
         }, view::showError);
 
     subscriptions.add(subscription);
+  }
+
+  @Override public void calculateRates(String amount, Map<String, Double> rates) {
+    amount = amount.trim();
+    if (amount.isEmpty()) {
+      view.showError(new Throwable());
+      return;
+    }
+
+    final int value = Integer.parseInt(amount);
+    final Map<String, Integer> calculatedRates = currencyRepository.calculateRates(value, rates);
   }
 
   @Override public void subscribe() {
