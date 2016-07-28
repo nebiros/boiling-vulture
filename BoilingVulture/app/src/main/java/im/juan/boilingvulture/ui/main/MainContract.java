@@ -1,5 +1,6 @@
 package im.juan.boilingvulture.ui.main;
 
+import com.github.mikephil.charting.data.BarData;
 import im.juan.boilingvulture.data.LatestRates;
 import im.juan.boilingvulture.ui.BasePresenter;
 import im.juan.boilingvulture.ui.BaseView;
@@ -12,6 +13,8 @@ public interface MainContract {
     void showError(Throwable error);
 
     void latestRates(LatestRates latestRates);
+
+    void updateBarChart(BarData data);
   }
 
   interface Presenter extends BasePresenter {

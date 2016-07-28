@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
 import im.juan.boilingvulture.R;
 import im.juan.boilingvulture.data.LatestRates;
 
@@ -16,6 +18,7 @@ public class MainFragment extends Fragment implements MainContract.View {
   private LatestRates latestRates;
   private EditText convertEditView;
   private Button convertButton;
+  private BarChart barChart;
 
   public MainFragment() {
   }
@@ -41,6 +44,7 @@ public class MainFragment extends Fragment implements MainContract.View {
     convertButton = (Button) root.findViewById(R.id.convert_button);
     convertButton.setOnClickListener(
         view -> presenter.calculateRates(convertEditView.getText().toString(), latestRates.rates));
+    barChart = (BarChart) root.findViewById(R.id.bar_chart);
 
     return root;
   }
@@ -55,5 +59,14 @@ public class MainFragment extends Fragment implements MainContract.View {
 
   @Override public void latestRates(LatestRates latestRates) {
     this.latestRates = latestRates;
+  }
+
+  @Override public void updateBarChart(BarData data) {
+    data.notifyDataChanged();
+
+    barChart.setData(data);
+    barChart.notifyDataSetChanged();
+
+    barChart.setVisibility(View.VISIBLE);
   }
 }

@@ -1,5 +1,6 @@
 package im.juan.boilingvulture.ui.main;
 
+import com.github.mikephil.charting.data.BarData;
 import im.juan.boilingvulture.data.CurrencyRepository;
 import im.juan.boilingvulture.data.LatestRates;
 import java.util.Map;
@@ -52,6 +53,8 @@ public final class MainPresenter implements MainContract.Presenter {
 
     final int value = Integer.parseInt(amount);
     final Map<String, Integer> calculatedRates = currencyRepository.calculateRates(value, rates);
+    final BarData data = currencyRepository.prepareDataForChart(calculatedRates);
+    view.updateBarChart(data);
   }
 
   @Override public void subscribe() {

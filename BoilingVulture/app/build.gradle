@@ -82,6 +82,7 @@ dependencies {
   compile "com.squareup.retrofit2:converter-moshi:$rootProject.ext.retrofit2Version"
   compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.ext.retrofit2Version"
   compile "com.jakewharton.timber:timber:$rootProject.ext.timberVersion"
+  compile "com.github.PhilJay:MPAndroidChart:$rootProject.ext.mpAndroidChartVersion"
 
   // dagger
   apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
@@ -91,4 +92,5 @@ dependencies {
   testCompile "junit:junit:$rootProject.ext.junitVersion"
   testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
   testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+  testCompile "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
 }

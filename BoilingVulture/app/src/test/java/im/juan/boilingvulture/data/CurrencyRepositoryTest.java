@@ -1,12 +1,17 @@
 package im.juan.boilingvulture.data;
 
 import android.support.v4.util.ArrayMap;
+import com.github.mikephil.charting.data.BarData;
+import im.juan.boilingvulture.BuildConfig;
 import im.juan.boilingvulture.data.services.FixerService;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import retrofit2.Response;
 import retrofit2.adapter.rxjava.Result;
 import rx.Observable;
@@ -18,6 +23,8 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
 public class CurrencyRepositoryTest {
 
   @Mock FixerService fixerService;
@@ -71,5 +78,18 @@ public class CurrencyRepositoryTest {
     assertThat(calculatedRates.get("GBP"), is(75));
     assertThat(calculatedRates.get("JPY"), is(10569));
     assertThat(calculatedRates.get("EUR"), is(90));
+  }
+
+  @Test public void testPrepareDataForChart() throws Exception {
+    final Map<String, Integer> rates = new ArrayMap<>();
+    rates.put("BRL", 325);
+    rates.put("GBP", 75);
+    rates.put("JPY", 10569);
+    rates.put("EUR", 90);
+
+    final BarData data = repository.prepareDataForChart(rates);
+
+    assertThat(data, is(not(nullValue())));
+    assertThat(data.getDataSetCount(), is(1));
   }
 }

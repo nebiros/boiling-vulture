@@ -15,6 +15,7 @@ buildscript {
 allprojects {
   repositories {
     jcenter()
+    maven { url "https://jitpack.io" }
   }
 }
 
@@ -41,4 +42,6 @@ ext {
   retrofit2Version = '2.1.0'
   okhttp3Version = '3.4.1'
   timberVersion = '4.1.2'
+  mpAndroidChartVersion = 'v3.0.0-beta1'
+  robolectricVersion = '3.1.1'
 }
